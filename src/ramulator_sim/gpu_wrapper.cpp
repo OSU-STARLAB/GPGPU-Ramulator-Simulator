@@ -57,6 +57,7 @@ void GpuWrapper::cycle()
 
 bool GpuWrapper::send(Request req)
 {
+    fprintf(stderr,"Enter the real send function`\n");
     return mem->send(req);
 }
 
@@ -146,6 +147,7 @@ void GpuWrapper::push(mem_fetch* mf)
             mem_temp_r[mf->get_addr()].push_back(mf);
         }
     }
+
     delete req;
 }
 
