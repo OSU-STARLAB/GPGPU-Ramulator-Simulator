@@ -286,7 +286,7 @@ public:
     bool send(Request req)
     {
 
-        fprintf(stderr,"In memeory.h send function\n");
+        fprintf(stderr,"In memeory.h send function1\n");
         req.addr_vec.resize(addr_bits.size());
         long addr = req.addr;
         int coreid = req.coreid;
@@ -308,6 +308,7 @@ public:
         default:
             assert(false);
         }
+          fprintf(stderr,"In memeory.h send function2\n");
 
         if (ctrls[req.addr_vec[0]]->enqueue(req)) {
             // tally stats here to avoid double counting for requests that aren't enqueued
@@ -320,6 +321,7 @@ public:
                 ++num_write_requests[coreid];
             }
             ++incoming_requests_per_channel[req.addr_vec[int(T::Level::Channel)]];
+              fprintf(stderr,"In memeory.h send function3\n");
             return true;
         }
 
