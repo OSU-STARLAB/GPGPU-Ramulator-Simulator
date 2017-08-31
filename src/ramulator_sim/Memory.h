@@ -285,6 +285,8 @@ public:
 
     bool send(Request req)
     {
+
+        fprintf(stderr,"In memeory.h send function\n");
         req.addr_vec.resize(addr_bits.size());
         long addr = req.addr;
         int coreid = req.coreid;
