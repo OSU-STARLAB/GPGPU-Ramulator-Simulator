@@ -136,8 +136,10 @@ void GpuWrapper::push(mem_fetch* mf)
     req->mf = mf;
     bool stall = send(*req);
 
+
     if (!stall)
     {
+        fprintf(stderr,"enter the stall not good`\n");
         if (mf->is_write()) {
             mem_temp_w[mf->get_addr()].push_back(mf);
         } else {
