@@ -129,6 +129,7 @@ void GpuWrapper::push(mem_fetch* mf)
         req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
 
     } else {
+        fprintf(stderr, "The address is %ld\n", (long)mf->get_addr());
         req = new Request((long)mf->get_addr(), Request::Type::READ, read_cb_func, mf->get_sid());
 
     }
