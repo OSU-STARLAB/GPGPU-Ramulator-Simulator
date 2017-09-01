@@ -103,6 +103,7 @@ public:
         // make sure 2^N channels/ranks
         // TODO support channel number that is not powers of 2
         int *sz = spec->org_entry.count;
+        fprintf(stderr, "The sz0 is %d\n",sz[0] );
         assert((sz[0] & (sz[0] - 1)) == 0);
         assert((sz[1] & (sz[1] - 1)) == 0);
         // validate size of one transaction
