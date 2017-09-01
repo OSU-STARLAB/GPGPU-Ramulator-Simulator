@@ -320,6 +320,7 @@ public:
             if (req.type == Request::Type::READ) {
                 fprintf(stderr,"In memeory.h send function3\n");
                 ++num_read_requests[coreid];
+                fprintf(stderr,"In memeory.h send function8\n");
                 ++incoming_read_reqs_per_channel[req.addr_vec[int(T::Level::Channel)]];
                 fprintf(stderr,"In memeory.h send function4\n");
             }
