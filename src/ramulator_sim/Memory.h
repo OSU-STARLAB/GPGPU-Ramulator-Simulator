@@ -287,7 +287,7 @@ public:
     {
 
         fprintf(stderr,"In memeory.h send function1\n");
-        fprintf(stderr,"The channel width is %d, the level channel is %dThe row is %d\n", spec->channel_width,int(T::Level::Channel)],T::Level::Row );
+        fprintf(stderr,"The channel width is %d, the level channel is %dThe row is %d\n", spec->channel_width,int(T::Level::Channel),T::Level::Row );
         req.addr_vec.resize(addr_bits.size());
         long addr = req.addr;
         int coreid = req.coreid;
