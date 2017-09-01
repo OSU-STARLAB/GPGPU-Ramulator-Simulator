@@ -51,7 +51,6 @@ GpuWrapper::~GpuWrapper() {
 
 void GpuWrapper::cycle()
 {
-  fprintf(stderr,"enter here_dram_cycle\n");
     mem->tick();
 }
 
@@ -93,12 +92,17 @@ void GpuWrapper::readComplete(Request& req) {
     //if(!r_returnq->full()) FIX ME!!!!!!!!!!
   fprintf(stderr,"enter here_READ COMPLETE`\n");
   deque<mem_fetch*> mf_queue = mem_temp_r.find(req.mf->get_addr())->second;
+  fprintf(stderr,"Position 1 \n");
     mem_fetch* mf = mf_queue.front();
+    fprintf(stderr,"Position 2 \n");
     mf_queue.pop_front();
+    fprintf(stderr,"Position 3 \n");
     if (!mf_queue.size())
         mem_temp_r.erase(req.mf->get_addr()) ;
+    fprintf(stderr,"Position 4 \n");
     mf->set_status(IN_PARTITION_MC_RETURNQ, gpu_sim_cycle + gpu_tot_sim_cycle);
     mf->set_reply();
+    fprintf(stderr,"Position 5 \n");
     r_returnq->push(mf);
     fprintf(stderr,"The end of the enter here_READ COMPLETE`\n");
     //dram_L2_queue_push(mf);

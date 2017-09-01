@@ -289,8 +289,6 @@ public:
     bool send(Request req)
     {
 
-        fprintf(stderr,"In memeory.h send function1\n");
-        fprintf(stderr,"The channel width is %d, the level channel is %dThe row is %d\n", spec->channel_width,int(T::Level::Channel),T::Level::Row );
         req.addr_vec.resize(addr_bits.size());
         long addr = req.addr;
         int coreid = req.coreid;
@@ -312,27 +310,21 @@ public:
         default:
             assert(false);
         }
-          fprintf(stderr,"In memeory.h send function2\n");
+          
 
         if (ctrls[req.addr_vec[0]]->enqueue(req)) {
             // tally stats here to avoid double counting for requests that aren't enqueued
             ++num_incoming_requests;
             if (req.type == Request::Type::READ) {
-                fprintf(stderr,"In memeory.h send function3\n");
                 ++num_read_requests[coreid];
-                fprintf(stderr,"In memeory.h send function8\n");
                 ++incoming_read_reqs_per_channel[req.addr_vec[int(T::Level::Channel)]];
-                fprintf(stderr,"In memeory.h send function4\n");
             }
             if (req.type == Request::Type::WRITE) {
                 ++num_write_requests[coreid];
             }
-            fprintf(stderr,"In memeory.h send function5\n");
             ++incoming_requests_per_channel[req.addr_vec[int(T::Level::Channel)]];
-             fprintf(stderr,"In memeory.h send function6\n"); 
             return true;
         }
- fprintf(stderr,"In memeory.h send function7\n");
         return false;
     }
 
