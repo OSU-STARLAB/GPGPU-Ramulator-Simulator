@@ -166,7 +166,7 @@ public:
         .precision(0)
         ;
 
-        fprintf(stderr, "The intialization that is level channel is %d, the sz is %d\n", int(T::Level::Channel),sz[int(T::Level::Channel)] );
+        fprintf(stderr, "The intialization that is level channel is %d, the sz is %dxxxxx\n", int(T::Level::Channel),sz[int(T::Level::Channel)] );
         incoming_requests_per_channel
         .init(sz[int(T::Level::Channel)])
         .name("incoming_requests_per_channel")
@@ -177,7 +177,7 @@ public:
         .name("incoming_read_reqs_per_channel")
         .desc("Number of incoming read requests to each DRAM channel")
         ;
-
+        fprintf(stderr, "The intialization that is level channel is %d, the sz is %dyyyyy\n", int(T::Level::Channel),sz[int(T::Level::Channel)] );
         ramulator_active_cycles
         .name("ramulator_active_cycles")
         .desc("The total number of cycles that the DRAM part is active (serving R/W)")
