@@ -165,6 +165,8 @@ public:
         .desc("Number of incoming write requests to DRAM per core")
         .precision(0)
         ;
+
+        fprintf(stderr, "The intialization that is level channel is %d, the sz is %d\n", int(T::Level::Channel),sz[int(T::Level::Channel)] );
         incoming_requests_per_channel
         .init(sz[int(T::Level::Channel)])
         .name("incoming_requests_per_channel")
