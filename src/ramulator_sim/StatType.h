@@ -325,6 +325,7 @@ private:
 
 public:
   void init(size_type __size) {
+    fprintf(stderr, "size is %d on earth\n",__size );
     _size = __size;
     data.resize(size());
     for (off_type i = 0 ; i < size() ; ++i) {
