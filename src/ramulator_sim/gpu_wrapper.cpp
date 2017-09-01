@@ -100,6 +100,7 @@ void GpuWrapper::readComplete(Request& req) {
     mf->set_status(IN_PARTITION_MC_RETURNQ, gpu_sim_cycle + gpu_tot_sim_cycle);
     mf->set_reply();
     r_returnq->push(mf);
+    fprintf(stderr,"The end of the enter here_READ COMPLETE`\n");
     //dram_L2_queue_push(mf);
 }
 
