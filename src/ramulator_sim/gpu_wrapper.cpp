@@ -91,7 +91,7 @@ bool GpuWrapper::full(int request_type, long request_addr )
 void GpuWrapper::readComplete(Request& req) {
     //if(!r_returnq->full()) FIX ME!!!!!!!!!!
   fprintf(stderr,"enter here_READ COMPLETE`\n");
-  deque<mem_fetch*> mf_queue = mem_temp_r.find(req.mf->get_addr())->second;
+  auto& mf_queue = mem_temp_r.find(req.mf->get_addr())->second;
   fprintf(stderr,"Position 1 \n");
     mem_fetch* mf = mf_queue.front();
     fprintf(stderr,"Position 2 \n");
@@ -109,7 +109,7 @@ void GpuWrapper::readComplete(Request& req) {
 }
 
 void GpuWrapper::writeComplete(Request& req) {
-    deque<mem_fetch*> mf_queue = mem_temp_w.find(req.mf->get_addr())->second;
+    auto& mf_queue = mem_temp_w.find(req.mf->get_addr())->second;
     mem_fetch* mf = mf_queue.front();
     mf_queue.pop_front();
     if (!mf_queue.size())
