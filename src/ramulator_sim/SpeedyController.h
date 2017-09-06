@@ -159,7 +159,7 @@ public:
 
             refreshed = clk;
         }
-
+        fprintf(stderr, "Enter the wrong place!!!!!!!!!!\n", );
         /*** 3. Should we schedule writes? ***/
         if (!write_mode) {
             // yes -- write queue is almost full or read queue is empty
