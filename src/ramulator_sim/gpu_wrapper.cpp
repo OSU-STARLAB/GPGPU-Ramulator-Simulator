@@ -127,6 +127,7 @@ void GpuWrapper::push(mem_fetch* mf)
     Request *req;
     if (mf->is_write())
     {
+         fprintf(stderr,"Write request is detected !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
         req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
 
     } else {
