@@ -142,10 +142,10 @@ void GpuWrapper::push(mem_fetch* mf)
 
     }
     req->mf = mf;
-    bool stall = send(*req);
+    bool accepted = send(*req);
     fprintf(stderr, "the stall signal is %d\n", stall);
 
-    if (!stall)
+    if (accepted)
     {
         fprintf(stderr,"enter the stall not good`\n");
         if (mf->is_write()) {
