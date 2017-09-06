@@ -56,7 +56,6 @@ void GpuWrapper::cycle()
 
 bool GpuWrapper::send(Request req)
 {
-    fprintf(stderr,"Enter the real send function`\n");
     return mem->send(req);
 }
 
@@ -66,7 +65,6 @@ void GpuWrapper::finish(void) {
 
 bool GpuWrapper::full(int request_type, long request_addr )
 {
-    fprintf(stderr, "Enter here the full judgement, the type is %d, the request address is%ld\n", request_type, request_addr);
     // 1 is for write, while 0 for read
     if (request_type == 0)
     {
@@ -95,22 +93,18 @@ void GpuWrapper::readComplete(Request& req) {
   auto& mf_queue = mem_temp_r.find(req.mf->get_addr())->second;
   fprintf(stderr,"Position 1, and the size is %u \n", mf_queue.size());
 
-    mem_fetch* mf = mf_queue.front();
-    fprintf(stderr,"Position 2 \n");
-    mf_queue.pop_front();
-    fprintf(stderr,"Position 3 \n");
+    mem_fetch* mf = mf_queue.front();   
+    mf_queue.pop_front(); 
     if (!mf_queue.size())
         mem_temp_r.erase(req.mf->get_addr()) ;
-    fprintf(stderr,"Position 4 \n");
     mf->set_status(IN_PARTITION_MC_RETURNQ, gpu_sim_cycle + gpu_tot_sim_cycle);
     mf->set_reply();
-    fprintf(stderr,"Position 5 \n");
     r_returnq->push(mf);
-    fprintf(stderr,"The end of the enter here_READ COMPLETE`\n");
     //dram_L2_queue_push(mf);
 }
 
 void GpuWrapper::writeComplete(Request& req) {
+    fprintf(stderr,"enter here_Write COMPLETE`\n");
     auto& mf_queue = mem_temp_w.find(req.mf->get_addr())->second;
     mem_fetch* mf = mf_queue.front();
     mf_queue.pop_front();
@@ -130,7 +124,6 @@ void GpuWrapper::writeComplete(Request& req) {
 
 void GpuWrapper::push(mem_fetch* mf)
 {
-  fprintf(stderr,"enter here_PUSH request`\n");
     Request *req;
     if (mf->is_write())
     {
@@ -147,7 +140,6 @@ void GpuWrapper::push(mem_fetch* mf)
 
     if (accepted)
     {
-        fprintf(stderr,"enter the stall not good`\n");
         if (mf->is_write()) {
             mem_temp_w[mf->get_addr()].push_back(mf);
         } else {
