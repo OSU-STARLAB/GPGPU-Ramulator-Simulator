@@ -426,7 +426,7 @@ public:
         }
 
         // remove request from queue
-        queue->q.erase(req);
+        queue->q.erase(*req);
     }
 
     bool is_ready(list<Request>::iterator req)
