@@ -89,7 +89,7 @@ bool GpuWrapper::full(int request_type, long request_addr )
 void GpuWrapper::readComplete(Request& req) {
     //if(!r_returnq->full()) FIX ME!!!!!!!!!!
     // fprintf(stderr,"enter here_READ COMPLETE`\n");
-    fprintf(stderr, "Readthe returned req addres is %ld\n", req.mf->get_addr());
+    //fprintf(stderr, "Readthe returned req addres is %ld\n", req.mf->get_addr());
     auto& mf_queue = mem_temp_r.find(req.mf->get_addr())->second;
     mem_fetch* mf = mf_queue.front();
     mf_queue.pop_front();
@@ -137,7 +137,7 @@ void GpuWrapper::push(mem_fetch* mf)
     {
         if (mf->is_write()) {
             mem_temp_w[mf->get_addr()].push_back(mf);
-            fprintf(stderr, "the pushed_write req addres is %ld \n", mf->get_addr());
+            // fprintf(stderr, "the pushed_write req addres is %ld \n", mf->get_addr());
         } else {
             mem_temp_r[mf->get_addr()].push_back(mf);
             fprintf(stderr, "the pushed_read req addres is %ld\n", mf->get_addr());
