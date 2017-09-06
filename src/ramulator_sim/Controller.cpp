@@ -86,6 +86,7 @@ void Controller<TLDRAM>::tick() {
         if (writeq.size() <= int(0.2 * writeq.max) && readq.size() != 0)
             write_mode = false;
     }
+    fprintf(stderr, "The write mode is %d, and the write q size is %d, the max is %d\n", write_mode, writeq.size(), int(writeq.max));
 
     /*** 4. Find the best command to schedule, if any ***/
     Queue* queue = !write_mode ? &readq : &writeq;
