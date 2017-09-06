@@ -11,16 +11,16 @@ Config::Config(const std::string& fname) {
 void Config::parse(const string& fname)
 {
 
-       char cCurrentPath[FILENAME_MAX];
+    char cCurrentPath[FILENAME_MAX];
 
- if (!getcwd(cCurrentPath, sizeof(cCurrentPath)))
-     {
-     exit(1);
-     }
+    if (!getcwd(cCurrentPath, sizeof(cCurrentPath)))
+    {
+        exit(1);
+    }
 
-        cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
+    // cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
 
-        fprintf (stderr,"The current working directory is %s", cCurrentPath);
+    //fprintf (stderr,"The current working directory is %s", cCurrentPath);
 
     ifstream file(fname);
     assert(file.good() && "Bad config file");

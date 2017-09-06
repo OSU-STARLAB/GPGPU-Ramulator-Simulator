@@ -376,6 +376,7 @@ public:
       fprintf(stderr, "the index is %d, the size is %d", index, size());
     }
 
+
     assert(index >= 0 && index < size());
     return data[index];
   }
