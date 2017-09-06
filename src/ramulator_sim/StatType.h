@@ -325,7 +325,6 @@ private:
 
 public:
   void init(size_type __size) {
-    fprintf(stderr, "size is %d on earth\n",__size );
     _size = __size;
     data.resize(size());
     for (off_type i = 0 ; i < size() ; ++i) {
@@ -372,11 +371,11 @@ public:
   }
 
   Element &operator[](off_type index) {
-      if (!(index >= 0 && index < size()))
-	{
-	  fprintf(stderr,"the index is %d, the size is %d", index,size());
-	}
-    
+    if (!(index >= 0 && index < size()))
+    {
+      fprintf(stderr, "the index is %d, the size is %d", index, size());
+    }
+
     assert(index >= 0 && index < size());
     return data[index];
   }
