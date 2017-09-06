@@ -92,7 +92,8 @@ void GpuWrapper::readComplete(Request& req) {
     //if(!r_returnq->full()) FIX ME!!!!!!!!!!
   fprintf(stderr,"enter here_READ COMPLETE`\n");
   auto& mf_queue = mem_temp_r.find(req.mf->get_addr())->second;
-  fprintf(stderr,"Position 1 \n");
+  fprintf(stderr,"Position 1, and the size is %u \n", mf_queue.size());
+
     mem_fetch* mf = mf_queue.front();
     fprintf(stderr,"Position 2 \n");
     mf_queue.pop_front();
