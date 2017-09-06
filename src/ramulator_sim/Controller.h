@@ -422,11 +422,11 @@ public:
 
         if (req->type == Request::Type::WRITE) {
             channel->update_serving_requests(req->addr_vec.data(), -1, clk);
-            req->callback(req); // Add by Yongbin Gu
+            req->callback(*req); // Add by Yongbin Gu
         }
 
         // remove request from queue
-        queue->q.erase(*req);
+        queue->q.erase(req);
     }
 
     bool is_ready(list<Request>::iterator req)
