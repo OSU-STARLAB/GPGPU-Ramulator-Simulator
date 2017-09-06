@@ -75,7 +75,7 @@ memory_partition_unit::memory_partition_unit( unsigned partition_id,
     /*Modified by Yongbin Gu*/
     //Original
     //m_dram = new dram_t(m_id,m_config,m_stats,this);
-    
+
     Config m_r_config("HBM-config.cfg");
     m_r_config.set_core_num(core_numbers);
 
@@ -303,7 +303,6 @@ void memory_partition_unit::dram_cycle()
             {   // 1 is for write, while 0 for read
                 if ( !m_dram_r->full(1, (long)mf->get_addr()) )
                 {
-                      fprintf(stderr,"enter here L2 cache write latency q n");
                     m_sub_partition[spid]->L2_dram_queue_pop();
                     MEMPART_DPRINTF("Issue mem_fetch request %p from sub partition %d to dram\n", mf, spid);
                     dram_delay_t d;
@@ -318,10 +317,8 @@ void memory_partition_unit::dram_cycle()
             } else
             {
 
-                fprintf(stderr,"The full signal is %d\n",m_dram_r->full(0, (long)mf->get_addr()) );
                 if ( !m_dram_r->full(0, (long)mf->get_addr()) )
                 {
-                    fprintf(stderr,"enter here L2 cache read latency q n");
                     m_sub_partition[spid]->L2_dram_queue_pop();
                     MEMPART_DPRINTF("Issue mem_fetch request %p from sub partition %d to dram\n", mf, spid);
                     dram_delay_t d;
@@ -335,12 +332,11 @@ void memory_partition_unit::dram_cycle()
             }
         }
     }
-          
+
     if ( !m_dram_latency_queue.empty() && ( (gpu_sim_cycle + gpu_tot_sim_cycle) >= m_dram_latency_queue.front().ready_cycle ) ) {
 
 
         mem_fetch* mf = m_dram_latency_queue.front().req;
-	fprintf(stderr,"enter here L2cache dram queue");
         if (mf->is_write())
         {
             if ( !m_dram_r->full(1, (long)mf->get_addr()) )
@@ -621,7 +617,7 @@ void gpgpu_sim::print_dram_stats(FILE * fout) const
     unsigned tot_req = 0;
 
     for (unsigned i = 0; i < m_memory_config->m_n_mem; i++) {
-       // m_memory_partition_unit[i]->set_dram_power_stats(cmd, activity, nop, act, pre, rd, wr, req);
+        // m_memory_partition_unit[i]->set_dram_power_stats(cmd, activity, nop, act, pre, rd, wr, req);
         tot_cmd += cmd;
         tot_nop += nop;
         tot_act += act;

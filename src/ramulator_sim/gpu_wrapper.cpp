@@ -88,13 +88,11 @@ bool GpuWrapper::full(int request_type, long request_addr )
 //In this function, I can put the request into the DRAM to L2 queue.
 void GpuWrapper::readComplete(Request& req) {
     //if(!r_returnq->full()) FIX ME!!!!!!!!!!
-  fprintf(stderr,"enter here_READ COMPLETE`\n");
-  fprintf(stderr, "the returned req addres is %ld\n", req.mf->get_addr());
-  auto& mf_queue = mem_temp_r.find(req.mf->get_addr())->second;
-  fprintf(stderr,"Position 1, and the size is %u \n", mf_queue.size());
-
-    mem_fetch* mf = mf_queue.front();   
-    mf_queue.pop_front(); 
+    // fprintf(stderr,"enter here_READ COMPLETE`\n");
+    fprintf(stderr, "Readthe returned req addres is %ld\n", req.mf->get_addr());
+    auto& mf_queue = mem_temp_r.find(req.mf->get_addr())->second;
+    mem_fetch* mf = mf_queue.front();
+    mf_queue.pop_front();
     if (!mf_queue.size())
         mem_temp_r.erase(req.mf->get_addr()) ;
     mf->set_status(IN_PARTITION_MC_RETURNQ, gpu_sim_cycle + gpu_tot_sim_cycle);
@@ -104,7 +102,8 @@ void GpuWrapper::readComplete(Request& req) {
 }
 
 void GpuWrapper::writeComplete(Request& req) {
-    fprintf(stderr,"enter here_Write COMPLETE`\n");
+    //fprintf(stderr,"enter here_Write COMPLETE`\n");
+    fprintf(stderr, "Writethe returned req addres is %ld\n", req.mf->get_addr());
     auto& mf_queue = mem_temp_w.find(req.mf->get_addr())->second;
     mem_fetch* mf = mf_queue.front();
     mf_queue.pop_front();
@@ -127,25 +126,21 @@ void GpuWrapper::push(mem_fetch* mf)
     Request *req;
     if (mf->is_write())
     {
-         fprintf(stderr,"Write request is detected !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
         req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
-
     } else {
-        fprintf(stderr, "The address is %ld\n", (long)mf->get_addr());
         req = new Request((long)mf->get_addr(), Request::Type::READ, read_cb_func, mf->get_sid());
-
     }
     req->mf = mf;
     bool accepted = send(*req);
-    fprintf(stderr, "the stall signal is %d\n", accepted);
-
+    assert(accepted);
     if (accepted)
     {
         if (mf->is_write()) {
             mem_temp_w[mf->get_addr()].push_back(mf);
+            fprintf(stderr, "the pushed_write req addres is %ld \n", mf->get_addr());
         } else {
             mem_temp_r[mf->get_addr()].push_back(mf);
-            fprintf(stderr, "the pushed req addres is %ld\n", mf->get_addr());
+            fprintf(stderr, "the pushed_read req addres is %ld\n", mf->get_addr());
         }
     }
 
