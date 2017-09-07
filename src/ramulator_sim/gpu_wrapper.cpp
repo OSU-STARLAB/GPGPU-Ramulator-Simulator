@@ -124,12 +124,19 @@ void GpuWrapper::writeComplete(Request& req) {
 void GpuWrapper::push(mem_fetch* mf)
 {
     Request *req;
-    fprintf(stderr, "The sid number is %d\n", mf->get_sid());
+    //fprintf(stderr, "The sid number is %d\n", mf->get_sid());
     if (mf->is_write())
     {
-        req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
+        if (mf->get_sid() < 0)
+            req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, core_numbers);
+        else
+            req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
     } else {
-        req = new Request((long)mf->get_addr(), Request::Type::READ, read_cb_func, mf->get_sid());
+
+        if (mf->get_sid() < 0)
+            req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, core_numbers);
+        else
+            req = new Request((long)mf->get_addr(), Request::Type::READ, read_cb_func, mf->get_sid());
     }
     req->mf = mf;
     bool accepted = send(*req);

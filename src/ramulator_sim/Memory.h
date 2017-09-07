@@ -320,7 +320,7 @@ public:
             }
             if (req.type == Request::Type::WRITE) {
                 // fprintf(stderr, "The position 5\n" );
-                fprintf(stderr, "the coreid is %d\n", coreid );
+                //fprintf(stderr, "the coreid is %d\n", coreid );
                 ++num_write_requests[coreid];
                 //  fprintf(stderr, "The position 6\n" );
             }
