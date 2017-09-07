@@ -124,6 +124,7 @@ void GpuWrapper::writeComplete(Request& req) {
 void GpuWrapper::push(mem_fetch* mf)
 {
     Request *req;
+    fprintf(stderr, "The sid number is %d\n", mf->get_sid());
     if (mf->is_write())
     {
         req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
