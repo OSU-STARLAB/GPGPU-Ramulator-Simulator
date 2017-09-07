@@ -127,25 +127,25 @@ void GpuWrapper::push(mem_fetch* mf)
     //fprintf(stderr, "The sid number is %d\n", mf->get_sid());
     if (mf->is_write())
     {
-        if (mf->get_sid() < 0)
+        if ((mf->get_sid()) >= 0)
         {
-            req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, core_numbers);
+            req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
             fprintf(stderr, "1the request number is %d\n", req->coreid);
         }
         else {
 
-            req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
+            req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, core_numbers);
             fprintf(stderr, "2the request number is %d, the sid is %d\n", req->coreid, mf->get_sid());
         }
     } else {
 
-        if (mf->get_sid() < 0)
+        if ((mf->get_sid()) >= 0)
         {
-            req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, core_numbers);
+            req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
             fprintf(stderr, "3the request number is %d\n", req->coreid);
         }
         else {
-            req = new Request((long)mf->get_addr(), Request::Type::READ, read_cb_func, mf->get_sid());
+            req = new Request((long)mf->get_addr(), Request::Type::READ, read_cb_func, core_numbers);
             fprintf(stderr, "4the request number is %d\n", req->coreid);
         }
     }
