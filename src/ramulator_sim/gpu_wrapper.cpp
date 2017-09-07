@@ -135,7 +135,7 @@ void GpuWrapper::push(mem_fetch* mf)
         else {
 
             req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
-            fprintf(stderr, "2the request number is %d\n", req->coreid);
+            fprintf(stderr, "2the request number is %d, the sid is %d\n", req->coreid, mf->get_sid());
         }
     } else {
 
