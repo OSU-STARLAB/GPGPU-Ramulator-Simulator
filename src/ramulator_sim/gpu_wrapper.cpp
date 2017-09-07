@@ -127,7 +127,7 @@ void GpuWrapper::push(mem_fetch* mf)
     fprintf(stderr, "The core number is %d\n", core_numbers);
     if (mf->is_write())
     {
-        if ((mf->get_sid()) == -1)
+        if ((mf->get_sid()) > core_numbers)
         {
             req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, core_numbers);
         }
@@ -137,7 +137,7 @@ void GpuWrapper::push(mem_fetch* mf)
         }
     } else {
 
-        if ((mf->get_sid()) == -1)
+        if ((mf->get_sid())  > core_numbers)
         {
             req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, core_numbers);
         }
