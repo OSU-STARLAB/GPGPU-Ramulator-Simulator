@@ -371,7 +371,7 @@ public:
   }
 
   Element &operator[](off_type index) {
-    if (!(index >= 0 && index < size()))
+    if (!(index >= 0 && index <= size())) //Modified by Yongbin Gu
     {
       fprintf(stderr, "the index is %d, the size is %d", index, size());
     }
