@@ -306,19 +306,26 @@ public:
         default:
             assert(false);
         }
-          
 
+        fprintf(stderr, "The position 1\n" );
         if (ctrls[req.addr_vec[0]]->enqueue(req)) {
             // tally stats here to avoid double counting for requests that aren't enqueued
             ++num_incoming_requests;
             if (req.type == Request::Type::READ) {
+                fprintf(stderr, "The position 2\n" );
                 ++num_read_requests[coreid];
+                fprintf(stderr, "The position 3\n" );
                 ++incoming_read_reqs_per_channel[req.addr_vec[int(T::Level::Channel)]];
+                fprintf(stderr, "The position 4\n" );
             }
             if (req.type == Request::Type::WRITE) {
+                fprintf(stderr, "The position 5\n" );
                 ++num_write_requests[coreid];
+                fprintf(stderr, "The position 6\n" );
             }
+            fprintf(stderr, "The position 7\n" );
             ++incoming_requests_per_channel[req.addr_vec[int(T::Level::Channel)]];
+            fprintf(stderr, "The position 8\n" );
             return true;
         }
         return false;
