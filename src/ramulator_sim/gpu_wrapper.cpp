@@ -128,13 +128,19 @@ void GpuWrapper::push(mem_fetch* mf)
     if (mf->is_write())
     {
         if (mf->get_sid() < 0)
+        {
             req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, core_numbers);
+            fprintf(stderr, "1the request number is %d\n", req->coreid);
+        }
         else
             req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, mf->get_sid());
     } else {
 
         if (mf->get_sid() < 0)
+        {
             req = new Request((long)mf->get_addr(), Request::Type::WRITE, write_cb_func, core_numbers);
+            fprintf(stderr, "2the request number is %d\n", req->coreid);
+        }
         else
             req = new Request((long)mf->get_addr(), Request::Type::READ, read_cb_func, mf->get_sid());
     }
