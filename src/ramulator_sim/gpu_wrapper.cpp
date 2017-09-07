@@ -124,7 +124,7 @@ void GpuWrapper::writeComplete(Request& req) {
 void GpuWrapper::push(mem_fetch* mf)
 {
     Request *req;
-    fprintf(stderr, "The core number is %d\n", core_numbers);
+    //fprintf(stderr, "The core number is %d\n", core_numbers);
     if (mf->is_write())
     {
         if ((mf->get_sid()) > (unsigned)core_numbers)
