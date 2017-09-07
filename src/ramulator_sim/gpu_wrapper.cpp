@@ -138,6 +138,7 @@ void GpuWrapper::push(mem_fetch* mf)
         else
             req = new Request((long)mf->get_addr(), Request::Type::READ, read_cb_func, mf->get_sid());
     }
+    assert(req->coreid > 0);
     req->mf = mf;
     bool accepted = send(*req);
     assert(accepted);
