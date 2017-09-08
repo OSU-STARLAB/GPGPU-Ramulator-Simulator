@@ -29,7 +29,7 @@ private:
 public:
 	double tCK;
 	unsigned mem_id;
-	GpuWrapper(const Config& configs, int cacheline, memory_partition_unit *mp);
+	GpuWrapper(const Config& configs, int cacheline, memory_partition_unit *mp, unsigned id);
 	~GpuWrapper();
 	void cycle();
 	bool send(Request req);
