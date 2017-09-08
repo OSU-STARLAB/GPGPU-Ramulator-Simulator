@@ -30,7 +30,7 @@ static map<string, function<MemoryBase *(const Config&, int)> > name_to_func = {
 };
 
 
-GpuWrapper::GpuWrapper(const Config& configs, int cacheline,  memory_partition_unit *mp):
+GpuWrapper::GpuWrapper(const Config& configs, int cacheline,  memory_partition_unit *mp, unsinged id):
     read_cb_func(std::bind(&GpuWrapper::readComplete, this, std::placeholders::_1)),
     write_cb_func(std::bind(&GpuWrapper::writeComplete, this, std::placeholders::_1))
 {
@@ -42,6 +42,7 @@ GpuWrapper::GpuWrapper(const Config& configs, int cacheline,  memory_partition_u
 //    write_cb_func(std::bind(&GpuWrapper::writeComplete, this, std::placeholders::_1));
     r_returnq = new fifo_pipeline<mem_fetch>("ramulatorreturnq", 0, 1024);
     m_memory_partition_unit = mp;
+    mem_id = id;
 }
 
 
@@ -123,6 +124,7 @@ void GpuWrapper::writeComplete(Request& req) {
 
 void GpuWrapper::push(mem_fetch* mf)
 {
+    fprintf(stderr, "mem id is %u\n", this->mem_id);
     Request *req;
     //fprintf(stderr, "The core number is %d\n", core_numbers);
     if (mf->is_write())
