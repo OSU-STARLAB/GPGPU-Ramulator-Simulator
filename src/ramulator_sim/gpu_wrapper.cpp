@@ -30,7 +30,7 @@ static map<string, function<MemoryBase *(const Config&, int)> > name_to_func = {
 };
 
 
-GpuWrapper::GpuWrapper(const Config& configs, int cacheline,  memory_partition_unit *mp, unsinged id):
+GpuWrapper::GpuWrapper(const Config& configs, int cacheline,  memory_partition_unit *mp, unsigned id):
     read_cb_func(std::bind(&GpuWrapper::readComplete, this, std::placeholders::_1)),
     write_cb_func(std::bind(&GpuWrapper::writeComplete, this, std::placeholders::_1))
 {
