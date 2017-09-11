@@ -124,7 +124,7 @@ void GpuWrapper::writeComplete(Request& req) {
 
 void GpuWrapper::push(mem_fetch* mf)
 {
-    fprintf(stderr, "mem id is %u\n", this->mem_id);
+    //fprintf(stderr, "mem id is %u\n", this->mem_id);
     Request *req;
     //fprintf(stderr, "The core number is %d\n", core_numbers);
     if (mf->is_write())
