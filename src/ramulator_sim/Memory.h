@@ -284,7 +284,7 @@ public:
 
     bool send(Request req)
     {
-
+        //test
         req.addr_vec.resize(addr_bits.size());
         long addr = req.addr;
         int coreid = req.coreid;
