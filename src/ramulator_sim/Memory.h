@@ -288,10 +288,10 @@ public:
         req.addr_vec.resize(addr_bits.size());
         long addr = req.addr;
         int coreid = req.coreid;
-        fprintf(stderr, "The normal addr is %x, the tx bit is %d\n", req.addr, tx_bits);
+        fprintf(stderr, "The normal addr is %x, the tx bit is %d\n", addr, tx_bits);
         // Each transaction size is 2^tx_bits, so first clear the lowest tx_bits bits
         clear_lower_bits(addr, tx_bits);
-        fprintf(stderr, "After clear lower bits The normal addr is %x\n", req.addr );
+        fprintf(stderr, "After clear lower bits The normal addr is %x\n", addr );
         //fprintf(stderr, "the txbits is %d, the type is %d, the addr bits is %d\n", tx_bits, int(type), addr_bits.size());
         switch (int(type)) {
         case int(Type::ChRaBaRoCo):
