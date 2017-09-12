@@ -369,6 +369,11 @@ void memory_partition_unit::set_done( mem_fetch * mf )
     m_sub_partition[spid]->set_done(mf);
 }
 
+void memory_partition_unit::print_stat( FILE * fp ) const
+{
+    m_dram_r->finish();
+}
+
 // void memory_partition_unit::set_dram_power_stats(unsigned & n_cmd,
 //         unsigned & n_activity,
 //         unsigned & n_nop,
@@ -399,6 +404,9 @@ void memory_partition_unit::print( FILE * fp ) const
     }
     // m_dram->print(fp);
 }
+
+
+
 
 memory_sub_partition::memory_sub_partition( unsigned sub_partition_id,
         const struct memory_config * config,
@@ -589,10 +597,6 @@ void memory_sub_partition::print( FILE * fp ) const
 }
 
 
-void memory_sub_partition::print_stat( FILE * fp ) const
-{
-    m_dram_r->finish();
-}
 
 void memory_stats_t::visualizer_print( gzFile visualizer_file )
 {
