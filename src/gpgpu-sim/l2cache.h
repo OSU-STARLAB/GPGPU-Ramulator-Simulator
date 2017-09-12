@@ -73,7 +73,7 @@ public:
 
   void visualizer_print( gzFile visualizer_file ) const;
   void print_stat( FILE *fp ) {
-    m_dram_r->finish();
+    GpuWrapper::m_dram_r->finish();
     //FIX ME: print the m_dram statistics
     //m_dram_r->print_stat(fp);
   }
