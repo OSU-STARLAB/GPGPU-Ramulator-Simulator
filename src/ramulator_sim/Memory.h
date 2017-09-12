@@ -300,9 +300,14 @@ public:
         case int(Type::RoBaRaCoCh):
             req.addr_vec[0] = slice_lower_bits(addr, addr_bits[0]);
             req.addr_vec[addr_bits.size() - 1] = slice_lower_bits(addr, addr_bits[addr_bits.size() - 1]);
-            fprintf(stderr, "the level row is %d\n", int(T::Level::Row));
+
             for (int i = 1; i <= int(T::Level::Row); i++)
                 req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
+            for (int i = 0; i < addr_bits.size() - 1; ++i)
+            {
+                fprintf(stderr, "The req addr %d is %d\n", i, req.addr_vec[i] );
+            }
+
             break;
         default:
             assert(false);
