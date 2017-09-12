@@ -307,7 +307,7 @@ public:
                 req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
             for (int i = 0; i < addr_bits.size() ; ++i)
             {
-                fprintf(stderr, "The req addr %d is %x, the addr_bits is addr_bits %x\n", i, req.addr_vec[i], addr_bits[i] );
+                fprintf(stderr, "The req addr %d is %x, the addr_bits is addr_bits %u\n", i, req.addr_vec[i], addr_bits[i] );
             }
 
             break;
