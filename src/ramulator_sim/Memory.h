@@ -291,6 +291,7 @@ public:
         fprintf(stderr, "The normal addr is %x\n", req.addr );
         // Each transaction size is 2^tx_bits, so first clear the lowest tx_bits bits
         clear_lower_bits(addr, tx_bits);
+        fprintf(stderr, "After clear lower bits The normal addr is %x\n", req.addr );
         //fprintf(stderr, "the txbits is %d, the type is %d, the addr bits is %d\n", tx_bits, int(type), addr_bits.size());
         switch (int(type)) {
         case int(Type::ChRaBaRoCo):
@@ -303,9 +304,9 @@ public:
 
             for (int i = 1; i <= int(T::Level::Row); i++)
                 req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
-            for (int i = 0; i < addr_bits.size() - 1; ++i)
+            for (int i = 0; i < addr_bits.size() ; ++i)
             {
-                fprintf(stderr, "The req addr %d is %x\n", i, req.addr_vec[i] );
+                fprintf(stderr, "The req addr %d is %x, the addr_bits is addr_bits %x\n", i, req.addr_vec[i], addr_bits[i] );
             }
 
             break;
