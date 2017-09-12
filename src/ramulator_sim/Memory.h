@@ -118,6 +118,7 @@ public:
 
         for (unsigned int lev = 0; lev < addr_bits.size(); lev++) {
             addr_bits[lev] = calc_log2(sz[lev]);
+            fprintf(stderr, "The addr bits is %u, the sz leve is%u , the level is %u\n", addr_bits[lev], sz[lev], lev);
             max_address *= sz[lev];
         }
 
