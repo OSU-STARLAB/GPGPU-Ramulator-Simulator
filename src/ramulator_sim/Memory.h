@@ -294,12 +294,12 @@ public:
         //fprintf(stderr, "the txbits is %d, the type is %d, the addr bits is %d\n", tx_bits, int(type), addr_bits.size());
         switch (int(type)) {
         case int(Type::ChRaBaRoCo):
-            fprintf(stderr, "Enter here 1\n", );
+            fprintf(stderr, "Enter here 1\n" );
             for (int i = addr_bits.size() - 1; i >= 0; i--)
                 req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
             break;
         case int(Type::RoBaRaCoCh):
-            fprintf(stderr, "Enter here 2\n", );
+            fprintf(stderr, "Enter here 2\n" );
             req.addr_vec[0] = slice_lower_bits(addr, addr_bits[0]);
             req.addr_vec[addr_bits.size() - 1] = slice_lower_bits(addr, addr_bits[addr_bits.size() - 1]);
             for (int i = 1; i <= int(T::Level::Row); i++)
