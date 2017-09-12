@@ -288,7 +288,7 @@ public:
         req.addr_vec.resize(addr_bits.size());
         long addr = req.addr;
         int coreid = req.coreid;
-        fprintf(stderr, "The normal addr is %ld\n", req.addr );
+        fprintf(stderr, "The normal addr is %x\n", req.addr );
         // Each transaction size is 2^tx_bits, so first clear the lowest tx_bits bits
         clear_lower_bits(addr, tx_bits);
         //fprintf(stderr, "the txbits is %d, the type is %d, the addr bits is %d\n", tx_bits, int(type), addr_bits.size());
@@ -305,7 +305,7 @@ public:
                 req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
             for (int i = 0; i < addr_bits.size() - 1; ++i)
             {
-                fprintf(stderr, "The req addr %d is %d\n", i, req.addr_vec[i] );
+                fprintf(stderr, "The req addr %d is %x\n", i, req.addr_vec[i] );
             }
 
             break;
