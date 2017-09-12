@@ -1190,9 +1190,9 @@ void gpgpu_sim::cycle()
     for (unsigned i = 0; i < m_memory_config->m_n_mem; i++) {
       m_memory_partition_unit[i]->dram_cycle(); // Issue the dram command (scheduler + delay model)
       // Update performance counters for DRAM
-     // m_memory_partition_unit[i]->set_dram_power_stats(m_power_stats->pwr_mem_stat->n_cmd[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_activity[CURRENT_STAT_IDX][i],
-       //   m_power_stats->pwr_mem_stat->n_nop[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_act[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_pre[CURRENT_STAT_IDX][i],
-         // m_power_stats->pwr_mem_stat->n_rd[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_wr[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_req[CURRENT_STAT_IDX][i]);
+      // m_memory_partition_unit[i]->set_dram_power_stats(m_power_stats->pwr_mem_stat->n_cmd[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_activity[CURRENT_STAT_IDX][i],
+      //   m_power_stats->pwr_mem_stat->n_nop[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_act[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_pre[CURRENT_STAT_IDX][i],
+      // m_power_stats->pwr_mem_stat->n_rd[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_wr[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_req[CURRENT_STAT_IDX][i]);
     }
   }
 
@@ -1311,8 +1311,8 @@ void gpgpu_sim::cycle()
       m_memory_stats->memlatstat_lat_pw();
       if (m_config.gpgpu_runtime_stat && (m_config.gpu_runtime_stat_flag != 0) ) {
         if (m_config.gpu_runtime_stat_flag & GPU_RSTAT_BW_STAT) {
-          // for (unsigned i = 0; i < m_memory_config->m_n_mem; i++)
-          //   m_memory_partition_unit[i]->print_stat(stdout);
+          for (unsigned i = 0; i < m_memory_config->m_n_mem; i++)
+            m_memory_partition_unit[i]->print_stat(stdout);
           printf("maxmrqlatency = %d \n", m_memory_stats->max_mrq_latency);
           printf("maxmflatency = %d \n", m_memory_stats->max_mf_latency);
         }
