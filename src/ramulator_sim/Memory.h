@@ -344,7 +344,7 @@ public:
         dram_capacity = max_address;
         int *sz = spec->org_entry.count;
         maximum_bandwidth = spec->speed_entry.rate * 1e6 * spec->channel_width * sz[int(T::Level::Channel)] / 8;
-        fprintf(stderr, "maximum_bandwidth is %d\n", maximum_bandwidth.value() );
+        fprintf(stderr, "maximum_bandwidth is %ld\n", long(maximum_bandwidth.value()) );
         long dram_cycles = num_dram_cycles.value();
         for (auto ctrl : ctrls) {
             long read_req = long(incoming_read_reqs_per_channel[ctrl->channel->id].value());

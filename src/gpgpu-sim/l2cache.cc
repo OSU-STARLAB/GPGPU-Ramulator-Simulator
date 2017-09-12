@@ -372,6 +372,7 @@ void memory_partition_unit::set_done( mem_fetch * mf )
 void memory_partition_unit::print_stat( FILE * fp ) const
 {
     m_dram_r->finish();
+    //FIX ME to print the statistics data
 }
 
 // void memory_partition_unit::set_dram_power_stats(unsigned & n_cmd,
