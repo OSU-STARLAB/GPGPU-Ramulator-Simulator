@@ -118,7 +118,6 @@ public:
 
         for (unsigned int lev = 0; lev < addr_bits.size(); lev++) {
             addr_bits[lev] = calc_log2(sz[lev]);
-            fprintf(stderr, "The addr bits is %u, the sz leve is%u , the level is %u\n", addr_bits[lev], sz[lev], lev);
             max_address *= sz[lev];
         }
 
@@ -289,11 +288,8 @@ public:
         req.addr_vec.resize(addr_bits.size());
         long addr = req.addr;
         int coreid = req.coreid;
-        fprintf(stderr, "The normal addr is %x, the tx bit is %d\n", addr, tx_bits);
         // Each transaction size is 2^tx_bits, so first clear the lowest tx_bits bits
         clear_lower_bits(addr, tx_bits);
-        fprintf(stderr, "After clear lower bits The normal addr is %x\n", addr );
-        //fprintf(stderr, "the txbits is %d, the type is %d, the addr bits is %d\n", tx_bits, int(type), addr_bits.size());
         switch (int(type)) {
         case int(Type::ChRaBaRoCo):
             for (int i = addr_bits.size() - 1; i >= 0; i--)
@@ -305,10 +301,6 @@ public:
 
             for (int i = 1; i <= int(T::Level::Row); i++)
                 req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
-            for (int i = 0; i < addr_bits.size() ; ++i)
-            {
-                fprintf(stderr, "The req addr %d is %x, the addr_bits is addr_bits %u\n", i, req.addr_vec[i], addr_bits[i] );
-            }
 
             break;
         default:
@@ -352,6 +344,7 @@ public:
         dram_capacity = max_address;
         int *sz = spec->org_entry.count;
         maximum_bandwidth = spec->speed_entry.rate * 1e6 * spec->channel_width * sz[int(T::Level::Channel)] / 8;
+        fprintf(stderr, "maximum_bandwidth is %d\n", maximum_bandwidth.value() );
         long dram_cycles = num_dram_cycles.value();
         for (auto ctrl : ctrls) {
             long read_req = long(incoming_read_reqs_per_channel[ctrl->channel->id].value());
