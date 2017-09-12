@@ -291,13 +291,15 @@ public:
 
         // Each transaction size is 2^tx_bits, so first clear the lowest tx_bits bits
         clear_lower_bits(addr, tx_bits);
-        fprintf(stderr, "the txbits is %d, the type is %d, the addr bits is %d\n", tx_bits, int(type), addr_bits.size());
+        //fprintf(stderr, "the txbits is %d, the type is %d, the addr bits is %d\n", tx_bits, int(type), addr_bits.size());
         switch (int(type)) {
         case int(Type::ChRaBaRoCo):
+            fprintf(stderr, "Enter here 1\n", );
             for (int i = addr_bits.size() - 1; i >= 0; i--)
                 req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
             break;
         case int(Type::RoBaRaCoCh):
+            fprintf(stderr, "Enter here 2\n", );
             req.addr_vec[0] = slice_lower_bits(addr, addr_bits[0]);
             req.addr_vec[addr_bits.size() - 1] = slice_lower_bits(addr, addr_bits[addr_bits.size() - 1]);
             for (int i = 1; i <= int(T::Level::Row); i++)
@@ -307,26 +309,18 @@ public:
             assert(false);
         }
 
-        // fprintf(stderr, "The position 1\n" );
         if (ctrls[req.addr_vec[0]]->enqueue(req)) {
             // tally stats here to avoid double counting for requests that aren't enqueued
             ++num_incoming_requests;
             if (req.type == Request::Type::READ) {
-                // fprintf(stderr, "The position 2\n" );
                 ++num_read_requests[coreid];
-                //   fprintf(stderr, "The position 3\n" );
                 ++incoming_read_reqs_per_channel[req.addr_vec[int(T::Level::Channel)]];
-                //   fprintf(stderr, "The position 4\n" );
+
             }
             if (req.type == Request::Type::WRITE) {
-                //   fprintf(stderr, "The position 5\n" );
-                //   fprintf(stderr, "the coreid is %d\n", coreid );
                 ++num_write_requests[coreid];
-                // fprintf(stderr, "The position 6\n" );
             }
-            // fprintf(stderr, "The position 7\n" );
             ++incoming_requests_per_channel[req.addr_vec[int(T::Level::Channel)]];
-            //fprintf(stderr, "The position 8\n" );
             return true;
         }
         return false;
