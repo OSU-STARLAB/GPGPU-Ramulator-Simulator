@@ -72,11 +72,13 @@ public:
   void set_done( mem_fetch *mf );
 
   void visualizer_print( gzFile visualizer_file ) const;
-  void print_stat( FILE *fp ) {
-    m_dram_r->finish();
-    //FIX ME: print the m_dram statistics
-    //m_dram_r->print_stat(fp);
-  }
+  void print_stat( FILE *fp ) const;
+
+  // {
+  //   m_dram_r->finish();
+  //   //FIX ME: print the m_dram statistics
+  //   //m_dram_r->print_stat(fp);
+  // }
   //void visualize() const { m_dram->visualize(); }
   void print( FILE *fp ) const;
 

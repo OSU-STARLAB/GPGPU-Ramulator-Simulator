@@ -588,6 +588,12 @@ void memory_sub_partition::print( FILE * fp ) const
         m_L2cache->display_state(fp);
 }
 
+
+void memory_sub_partition::print_stat( FILE * fp ) const
+{
+    m_dram_r->finish();
+}
+
 void memory_stats_t::visualizer_print( gzFile visualizer_file )
 {
     // gzprintf(visualizer_file, "Ltwowritemiss: %d\n", L2_write_miss);
