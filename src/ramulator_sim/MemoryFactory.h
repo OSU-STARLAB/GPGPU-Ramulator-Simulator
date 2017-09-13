@@ -31,6 +31,7 @@ public:
                "cacheline size must be a multiple of minimum channel width");
 
         spec->channel_width *= gang_number;
+        fprintf(stderr, "Enter here!!!!!!!!!!!!!!!!!!, the gang_number is %d\n", gang_number );
     }
 
     static Memory<T> *populate_memory(const Config& configs, T *spec, int channels, int ranks) {
