@@ -1312,7 +1312,10 @@ void gpgpu_sim::cycle()
       if (m_config.gpgpu_runtime_stat && (m_config.gpu_runtime_stat_flag != 0) ) {
         if (m_config.gpu_runtime_stat_flag & GPU_RSTAT_BW_STAT) {
           for (unsigned i = 0; i < m_memory_config->m_n_mem; i++)
+          {
+            exit(0);
             m_memory_partition_unit[i]->print_stat(stdout);
+          }
           printf("maxmrqlatency = %d \n", m_memory_stats->max_mrq_latency);
           printf("maxmflatency = %d \n", m_memory_stats->max_mf_latency);
         }
