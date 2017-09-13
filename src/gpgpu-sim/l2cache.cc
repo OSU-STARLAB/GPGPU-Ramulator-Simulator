@@ -403,7 +403,8 @@ void memory_partition_unit::print( FILE * fp ) const
         else
             fprintf(fp, " <NULL mem_fetch?>\n");
     }
-    // m_dram->print(fp);
+    ///FIX ME to get the statistics data
+    m_dram_r->finish();
 }
 
 
