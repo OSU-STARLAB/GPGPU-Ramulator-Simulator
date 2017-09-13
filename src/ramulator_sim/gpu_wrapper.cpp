@@ -61,7 +61,6 @@ bool GpuWrapper::send(Request req)
 }
 
 void GpuWrapper::finish(void) {
-    exit(0);
     mem->finish();
 }
 
