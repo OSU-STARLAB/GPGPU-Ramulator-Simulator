@@ -309,6 +309,7 @@ public:
 
         if (ctrls[req.addr_vec[0]]->enqueue(req)) {
             // tally stats here to avoid double counting for requests that aren't enqueued
+            fprintf(stderr, "The current addr vec is %d\n", req.addr_vec[0] );
             ++num_incoming_requests;
             if (req.type == Request::Type::READ) {
                 ++num_read_requests[coreid];
@@ -344,7 +345,7 @@ public:
         dram_capacity = max_address;
         int *sz = spec->org_entry.count;
         maximum_bandwidth = spec->speed_entry.rate * 1e6 * spec->channel_width * sz[int(T::Level::Channel)] / 8;
-        fprintf(stderr, "maximum_bandwidth is %ld, the rate is %ld, the channel width is %ld, the channel number is %ld\n", long(maximum_bandwidth.value()), long(spec->speed_entry.rate), long(spec->channel_width), long(sz[int(T::Level::Channel)]));
+        //fprintf(stderr, "maximum_bandwidth is %ld, the rate is %ld, the channel width is %ld, the channel number is %ld\n", long(maximum_bandwidth.value()), long(spec->speed_entry.rate), long(spec->channel_width), long(sz[int(T::Level::Channel)]));
         long dram_cycles = num_dram_cycles.value();
         for (auto ctrl : ctrls) {
             long read_req = long(incoming_read_reqs_per_channel[ctrl->channel->id].value());
