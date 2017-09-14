@@ -296,6 +296,7 @@ public:
                 req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
             break;
         case int(Type::RoBaRaCoCh):
+            fprintf(stderr, "the addr bits is %d\n", addr_bits[0]);
             req.addr_vec[0] = slice_lower_bits(addr, addr_bits[0]);
             req.addr_vec[addr_bits.size() - 1] = slice_lower_bits(addr, addr_bits[addr_bits.size() - 1]);
 
