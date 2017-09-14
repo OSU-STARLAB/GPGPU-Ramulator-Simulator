@@ -296,7 +296,7 @@ public:
                 req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
             break;
         case int(Type::RoBaRaCoCh):
-            fprintf(stderr, "the addr bits is %d\n", addr_bits[0]);
+            //fprintf(stderr, "the addr bits is %d\n", addr_bits[0]);
             req.addr_vec[0] = slice_lower_bits(addr, addr_bits[0]);
             req.addr_vec[addr_bits.size() - 1] = slice_lower_bits(addr, addr_bits[addr_bits.size() - 1]);
 
@@ -310,7 +310,7 @@ public:
 
         if (ctrls[req.addr_vec[0]]->enqueue(req)) {
             // tally stats here to avoid double counting for requests that aren't enqueued
-            fprintf(stderr, "The current addr vec is %d\n", req.addr_vec[0] );
+            // fprintf(stderr, "The current addr vec is %d\n", req.addr_vec[0] );
             ++num_incoming_requests;
             if (req.type == Request::Type::READ) {
                 ++num_read_requests[coreid];
