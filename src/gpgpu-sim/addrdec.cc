@@ -88,7 +88,7 @@ void linear_to_raw_address_translation::addrdec_tlx(new_addr_type addr, addrdec_
       tlx->row  = addrdec_packbits(addrdec_mask[ROW], addr, addrdec_mkhigh[ROW], addrdec_mklow[ROW]);
       tlx->col  = addrdec_packbits(addrdec_mask[COL], addr, addrdec_mkhigh[COL], addrdec_mklow[COL]);
       tlx->burst = addrdec_packbits(addrdec_mask[BURST], addr, addrdec_mkhigh[BURST], addrdec_mklow[BURST]);
-      fprintf(stderr, "chip number is %u, the address is %lu\n", tlx->chip, addr );
+      //fprintf(stderr, "chip number is %u, the address is %lu\n", tlx->chip, addr );
    } else {
       // Split the given address at ADDR_CHIP_S into (MSBs,LSBs)
       // - extract chip address using modulus of MSBs
