@@ -342,7 +342,6 @@ void memory_partition_unit::dram_cycle()
             if ( !m_dram_r->full(1, (long)mf->get_addr()) )
             {
                 m_dram_latency_queue.pop_front();
-                fprintf(stderr, "The partition id is %u\n", m_id );
                 m_dram_r->push(mf);
             }
         } else
@@ -350,7 +349,6 @@ void memory_partition_unit::dram_cycle()
             if ( !m_dram_r->full(0, (long)mf->get_addr()) )
             {
                 m_dram_latency_queue.pop_front();
-                fprintf(stderr, "The partition id is %u\n", m_id );
                 m_dram_r->push(mf);
             }
         }

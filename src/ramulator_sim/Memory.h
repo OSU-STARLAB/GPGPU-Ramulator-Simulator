@@ -310,7 +310,7 @@ public:
 
         if (ctrls[req.addr_vec[0]]->enqueue(req)) {
             // tally stats here to avoid double counting for requests that aren't enqueued
-            fprintf(stderr, "The current addr vec is %d\n", req.addr_vec[0] );
+            //fprintf(stderr, "The current addr vec is %d\n", req.addr_vec[0] );
             ++num_incoming_requests;
             if (req.type == Request::Type::READ) {
                 ++num_read_requests[coreid];
