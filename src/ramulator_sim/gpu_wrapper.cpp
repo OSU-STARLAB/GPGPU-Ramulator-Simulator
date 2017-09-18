@@ -62,6 +62,7 @@ bool GpuWrapper::send(Request req)
 
 void GpuWrapper::finish(void) {
     mem->finish();
+    Stats_Ram::StatList.printall();
 }
 
 bool GpuWrapper::full(int request_type, long request_addr )
