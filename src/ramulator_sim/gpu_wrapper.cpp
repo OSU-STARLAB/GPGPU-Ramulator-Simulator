@@ -53,6 +53,7 @@ GpuWrapper::~GpuWrapper() {
 void GpuWrapper::cycle()
 {
     mem->tick();
+    Stats_Ram::curTick++;
 }
 
 bool GpuWrapper::send(Request req)
