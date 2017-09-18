@@ -61,6 +61,7 @@ bool GpuWrapper::send(Request req)
 }
 
 void GpuWrapper::finish(void) {
+    fprintf(stderr, "The dram stat is herere!!!!!!!!!!\n" );
     mem->finish();
     Stats_Ram::statlist.printall();
 }
