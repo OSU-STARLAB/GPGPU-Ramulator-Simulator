@@ -357,7 +357,7 @@ public:
         in_queue_req_num_avg = in_queue_req_num_sum.value() / dram_cycles;
         in_queue_read_req_num_avg = in_queue_read_req_num_sum.value() / dram_cycles;
         in_queue_write_req_num_avg = in_queue_write_req_num_sum.value() / dram_cycles;
-        Stats_Ram::statList.printall();
+        statList.printall();
     }
 
     long page_allocator(long addr, int coreid) {
