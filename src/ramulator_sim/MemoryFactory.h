@@ -41,6 +41,7 @@ public:
         if (default_ranks == 0) default_ranks = ranks;
 
         vector<Controller<T> *> ctrls;
+        fprintf(stderr, "This place is called !!!!!!!!!!!!!!!!!!!!!!!!!!!\n", );
         for (int c = 0; c < channels; c++) {
             DRAM<T>* channel = new DRAM<T>(spec, T::Level::Channel);
             channel->id = c;
