@@ -273,13 +273,13 @@ public:
         in_queue_write_req_num_sum += cur_que_writereq_num;
 
         bool is_active = false;
-        fprintf(stderr, "The 1\n");
+        //fprintf(stderr, "The 1\n");
         for (auto ctrl : ctrls) {
-            fprintf(stderr, "The tick times in a cycle,\n");
+            //fprintf(stderr, "The tick times in a cycle,\n");
             is_active = is_active || ctrl->is_active();
             ctrl->tick();
         }
-        fprintf(stderr, "The 2\n");
+        //fprintf(stderr, "The 2\n");
         if (is_active) {
             ramulator_active_cycles++;
         }
