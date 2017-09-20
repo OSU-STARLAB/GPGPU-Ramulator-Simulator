@@ -48,7 +48,7 @@ GpuWrapper::GpuWrapper(const Config& configs, int cacheline,  memory_partition_u
 
 GpuWrapper::~GpuWrapper() {
     delete mem;
-    fprintf(stderr, "The deconstruction is called ~~~~~~~~~\n", );
+    fprintf(stderr, "The deconstruction is called ~~~~~~~~~\n" );
 }
 
 void GpuWrapper::cycle()
