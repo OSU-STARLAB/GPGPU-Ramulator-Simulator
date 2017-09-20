@@ -43,6 +43,7 @@ public:
         vector<Controller<T> *> ctrls;
         fprintf(stderr, "This place is called !!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
         for (int c = 0; c < channels; c++) {
+            fprintf(stderr, "1111This place is called !!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
             DRAM<T>* channel = new DRAM<T>(spec, T::Level::Channel);
             channel->id = c;
             channel->regStats("");
