@@ -96,7 +96,6 @@ memory_partition_unit::~memory_partition_unit()
     //Original
     //   delete m_dram;
     //Original
-    fprintf(stderr, "The deconstruction function called here\n");
     delete m_dram_r;
     /*Modified by Yongbin Gu */
 
