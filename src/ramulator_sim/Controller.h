@@ -325,6 +325,7 @@ public:
 
     void tick()
     {
+        fprintf(stderr, "the return q is %u\n", r_returnq->get_length());
         clk++;
         req_queue_length_sum += readq.size() + writeq.size() + pending.size();
         read_req_queue_length_sum += readq.size() + pending.size();
