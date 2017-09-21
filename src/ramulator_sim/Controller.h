@@ -15,6 +15,7 @@
 #include "Request.h"
 #include "Scheduler.h"
 #include "Statistics.h"
+#include "gpu_wrapper.h"
 
 #include "ALDRAM.h"
 #include "SALP.h"
@@ -93,14 +94,17 @@ public:
     /* Commands to stdout */
     bool print_cmd_trace = false;
 
+    fifo_pipeline<mem_fetch> *r_returnq;
+
     /* Constructor */
-    Controller(const Config& configs, DRAM<T>* channel) :
+    Controller(const Config& configs, DRAM<T>* channel, fifo_pipeline<mem_fetch> *r_returnq) :
         channel(channel),
         scheduler(new Scheduler<T>(this)),
         rowpolicy(new RowPolicy<T>(this)),
         rowtable(new RowTable<T>(this)),
         refresh(new Refresh<T>(this)),
-        cmd_trace_files(channel->children.size())
+        cmd_trace_files(channel->children.size()),
+        r_returnq(r_returnq)
     {
         record_cmd_trace = configs.record_cmd_trace();
         print_cmd_trace = configs.print_cmd_trace();

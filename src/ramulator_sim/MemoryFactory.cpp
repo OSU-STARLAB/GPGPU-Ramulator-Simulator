@@ -32,7 +32,7 @@ void MemoryFactory<HBM>::validate(int channels, int ranks, const Config& configs
 }
 
 template <>
-MemoryBase *MemoryFactory<WideIO2>::create(const Config& configs, int cacheline) {
+MemoryBase *MemoryFactory<WideIO2>::create(const Config& configs, int cacheline, fifo_pipeline<mem_fetch> *r_returnq) {
     int channels = stoi(configs["channels"], NULL, 0);
     int ranks = stoi(configs["ranks"], NULL, 0);
     validate(channels, ranks, configs);
@@ -44,12 +44,12 @@ MemoryBase *MemoryFactory<WideIO2>::create(const Config& configs, int cacheline)
 
     extend_channel_width(spec, cacheline);
 
-    return (MemoryBase *)populate_memory(configs, spec, channels, ranks);
+    return (MemoryBase *)populate_memory(configs, spec, channels, ranks, r_returnq);
 }
 
 
 template <>
-MemoryBase *MemoryFactory<SALP>::create(const Config& configs, int cacheline) {
+MemoryBase *MemoryFactory<SALP>::create(const Config& configs, int cacheline, fifo_pipeline<mem_fetch> *r_returnq) {
     int channels = stoi(configs["channels"], NULL, 0);
     int ranks = stoi(configs["ranks"], NULL, 0);
     int subarrays = stoi(configs["subarrays"], NULL, 0);
@@ -63,7 +63,7 @@ MemoryBase *MemoryFactory<SALP>::create(const Config& configs, int cacheline) {
 
     extend_channel_width(spec, cacheline);
 
-    return (MemoryBase *)populate_memory(configs, spec, channels, ranks);
+    return (MemoryBase *)populate_memory(configs, spec, channels, ranks, r_returnq);
 }
 
 // }

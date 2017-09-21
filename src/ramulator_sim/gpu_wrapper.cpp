@@ -36,11 +36,12 @@ GpuWrapper::GpuWrapper(const Config& configs, int cacheline,  memory_partition_u
 {
     const string& std_name = configs["standard"];
     assert(name_to_func.find(std_name) != name_to_func.end() && "unrecognized standard name");
-    mem = name_to_func[std_name](configs, cacheline);
-    tCK = mem->clk_ns();
+
 //    read_cb_func(std::bind(&GpuWrapper::readComplete, this, std::placeholders::_1));
 //    write_cb_func(std::bind(&GpuWrapper::writeComplete, this, std::placeholders::_1));
     r_returnq = new fifo_pipeline<mem_fetch>("ramulatorreturnq", 0, 1024);
+    mem = name_to_func[std_name](configs, cacheline, r_returnq);
+    tCK = mem->clk_ns();
     m_memory_partition_unit = mp;
     mem_id = id;
 }
