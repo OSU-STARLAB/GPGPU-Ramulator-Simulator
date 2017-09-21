@@ -20,7 +20,7 @@
 
 
 
-static map<string, function<MemoryBase *(const Config&, int)> > name_to_func = {
+static map<string, function<MemoryBase *(const Config&, int, fifo_pipeline<mem_fetch> *)> > name_to_func = {
     {"DDR3", &MemoryFactory<DDR3>::create}, {"DDR4", &MemoryFactory<DDR4>::create},
     {"LPDDR3", &MemoryFactory<LPDDR3>::create}, {"LPDDR4", &MemoryFactory<LPDDR4>::create},
     {"GDDR5", &MemoryFactory<GDDR5>::create},
