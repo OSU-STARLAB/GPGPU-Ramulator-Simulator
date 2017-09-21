@@ -325,14 +325,14 @@ public:
 
     void tick()
     {
-        fprintf(stderr, "the return q is %u\n", r_returnq->get_length());
+        //fprintf(stderr, "the return q is %u\n", r_returnq->get_length());
         clk++;
         req_queue_length_sum += readq.size() + writeq.size() + pending.size();
         read_req_queue_length_sum += readq.size() + pending.size();
         write_req_queue_length_sum += writeq.size();
 
         /*** 1. Serve completed reads ***/
-        if (pending.size()) {
+        if (pending.size() && !r_returnq->full()) {
             Request& req = pending[0];
             if (req.depart <= clk) {
                 if (req.depart - req.arrive > 1) { // this request really accessed a row
