@@ -74,9 +74,9 @@ public:
 };
 
 template <>
-MemoryBase *MemoryFactory<WideIO2>::create(const Config& configs, int cacheline);
+MemoryBase *MemoryFactory<WideIO2>::create(const Config& configs, int cacheline, fifo_pipeline<mem_fetch> *r_returnq);
 template <>
-MemoryBase *MemoryFactory<SALP>::create(const Config& configs, int cacheline);
+MemoryBase *MemoryFactory<SALP>::create(const Config& configs, int cacheline, fifo_pipeline<mem_fetch> *r_returnq);
 
 // } /*namespace ramulator*/
 
