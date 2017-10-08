@@ -529,6 +529,7 @@ void memory_sub_partition::cache_cycle( unsigned cycle )
                 }
             }
         } else {
+            fprintf(stderr, "the bypass works\n" );
             // L2 is disabled or non-texture access to texture-only L2
             mf->set_status(IN_PARTITION_L2_TO_DRAM_QUEUE, gpu_sim_cycle + gpu_tot_sim_cycle);
             m_L2_dram_queue->push(mf);
