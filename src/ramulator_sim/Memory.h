@@ -108,6 +108,7 @@ public:
         // validate size of one transaction
         int tx = (spec->prefetch_size * spec->channel_width / 8);
         tx_bits = calc_log2(tx);
+        fprintf(stderr, "tge prefetch is %d, the channel width is %d, tx is %d\n", spec->prefetch_size, spec->channel_width, tx_bits);
         assert((1 << tx_bits) == tx);
         // If hi address bits will not be assigned to Rows
         // then the chips must not be LPDDRx 6Gb, 12Gb etc.
