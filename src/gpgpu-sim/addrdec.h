@@ -37,24 +37,24 @@
 
 struct addrdec_t {
    void print( FILE *fp ) const;
-    
+
    unsigned chip;
    unsigned bk;
    unsigned row;
    unsigned col;
    unsigned burst;
 
-   unsigned sub_partition; 
+   unsigned sub_partition;
 };
 
 class linear_to_raw_address_translation {
 public:
    linear_to_raw_address_translation();
    void addrdec_setoption(option_parser_t opp);
-   void init(unsigned int n_channel, unsigned int n_sub_partition_in_channel); 
+   void init(unsigned int n_channel, unsigned int n_sub_partition_in_channel);
 
    // accessors
-   void addrdec_tlx(new_addr_type addr, addrdec_t *tlx) const; 
+   void addrdec_tlx(new_addr_type addr, addrdec_t *tlx) const;
    new_addr_type partition_address( new_addr_type addr ) const;
 
 private:
@@ -67,22 +67,23 @@ private:
       ROW   = 2,
       COL   = 3,
       BURST = 4,
+      CHANNEL = 5,
       N_ADDRDEC
    };
 
    const char *addrdec_option;
    int gpgpu_mem_address_mask;
-   bool run_test; 
+   bool run_test;
 
    int ADDR_CHIP_S;
    unsigned char addrdec_mklow[N_ADDRDEC];
    unsigned char addrdec_mkhigh[N_ADDRDEC];
    new_addr_type addrdec_mask[N_ADDRDEC];
-   new_addr_type sub_partition_id_mask; 
+   new_addr_type sub_partition_id_mask;
 
    unsigned int gap;
    int m_n_channel;
-   int m_n_sub_partition_in_channel; 
+   int m_n_sub_partition_in_channel;
 };
 
 #endif

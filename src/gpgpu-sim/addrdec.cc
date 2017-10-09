@@ -131,6 +131,7 @@ void linear_to_raw_address_translation::addrdec_parseoption(const char *option)
    addrdec_mask[BK]   = 0x0;
    addrdec_mask[ROW]  = 0x0;
    addrdec_mask[COL]  = 0x0;
+   addrdec_mask[CHANNEL]  = 0x0;
    addrdec_mask[BURST] = 0x0;
 
    int ofs = 63;
@@ -142,6 +143,7 @@ void linear_to_raw_address_translation::addrdec_parseoption(const char *option)
       case 'R': case 'r':   addrdec_mask[ROW]   |= (1ULL << ofs); ofs--; break;
       case 'C': case 'c':   addrdec_mask[COL]   |= (1ULL << ofs); ofs--; break;
       case 'S': case 's':   addrdec_mask[BURST] |= (1ULL << ofs); addrdec_mask[COL]   |= (1ULL << ofs); ofs--; break;
+      case 'H': case 'h':   addrdec_mask[CHANNEL]   |= (1ULL << ofs); ofs--; break;
       // ignore bit
       case '0': ofs--; break;
       // ignore character
