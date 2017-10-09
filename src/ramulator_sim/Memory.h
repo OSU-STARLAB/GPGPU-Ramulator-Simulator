@@ -293,7 +293,7 @@ public:
         int coreid = req.coreid;
         // Each transaction size is 2^tx_bits, so first clear the lowest tx_bits bits
         clear_lower_bits(addr, tx_bits);
-        fprintf(stderr, "the addr is %ld, tx is %d\n", addr, tx_bits);
+        fprintf(stderr, "the originial address is %ld, the addr is %ld, tx is %d\n", req.addr, addr, tx_bits);
         switch (int(type)) {
         case int(Type::ChRaBaRoCo):
             for (int i = addr_bits.size() - 1; i >= 0; i--)
