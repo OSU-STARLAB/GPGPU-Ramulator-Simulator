@@ -52,7 +52,7 @@ mem_fetch::mem_fetch( const mem_access_t &access,
   m_sid = sid;
   m_tpc = tpc;
   m_wid = wid;
-  fprintf(stderr, "The row address is %llu\n", access.get_addr());
+  fprintf(stderr, "The row address is %llx\n", access.get_addr());
   config->m_address_mapping.addrdec_tlx(access.get_addr(), &m_raw_addr);
   m_partition_addr = config->m_address_mapping.partition_address(access.get_addr());
   m_type = m_access.is_write() ? WRITE_REQUEST : READ_REQUEST;
