@@ -63,7 +63,7 @@ bool GpuWrapper::send(Request req)
 }
 
 void GpuWrapper::finish(void) {
-    fprintf(stdout, "The dram stat is herere!!!!!!!!!!\n" );
+    //fprintf(stdout, "The dram stat is herere!!!!!!!!!!\n" );
     mem->finish();
     Stats_Ram::statlist.printall();
 }
@@ -128,7 +128,7 @@ void GpuWrapper::writeComplete(Request& req) {
 
 void GpuWrapper::push(mem_fetch* mf)
 {
-    fprintf(stderr, "mem id is %u\n", this->mem_id);
+    //fprintf(stderr, "mem id is %u\n", this->mem_id);
     Request *req;
     //fprintf(stderr, "The core number is %d\n", core_numbers);
     if (mf->is_write())
