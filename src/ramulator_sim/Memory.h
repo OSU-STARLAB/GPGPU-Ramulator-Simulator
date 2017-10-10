@@ -108,7 +108,7 @@ public:
         // validate size of one transaction
         int tx = (spec->prefetch_size * spec->channel_width / 8);
         tx_bits = calc_log2(tx);
-        fprintf(stderr, "tge prefetch is %d, the channel width is %d, tx is %d\n", spec->prefetch_size, spec->channel_width, tx_bits);
+        //fprintf(stderr, "tge prefetch is %d, the channel width is %d, tx is %d\n", spec->prefetch_size, spec->channel_width, tx_bits);
         assert((1 << tx_bits) == tx);
         // If hi address bits will not be assigned to Rows
         // then the chips must not be LPDDRx 6Gb, 12Gb etc.
@@ -294,7 +294,7 @@ public:
         int coreid = req.coreid;
         // Each transaction size is 2^tx_bits, so first clear the lowest tx_bits bits
         clear_lower_bits(addr, tx_bits);
-        fprintf(stderr, "the originial address is %lx, the addr is %lx, tx is %d\n", req.addr, addr, tx_bits);
+        //fprintf(stderr, "the originial address is %lx, the addr is %lx, tx is %d\n", req.addr, addr, tx_bits);
         switch (int(type)) {
         case int(Type::ChRaBaRoCo):
             for (int i = addr_bits.size() - 1; i >= 0; i--)
@@ -307,7 +307,7 @@ public:
 
             for (int i = 1; i <= int(T::Level::Row); i++)
             {
-                fprintf(stderr, "the i is %d, the addr bit is %d\n", i, addr_bits[i]);
+                //fprintf(stderr, "the i is %d, the addr bit is %d\n", i, addr_bits[i]);
                 req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
             }
             break;
