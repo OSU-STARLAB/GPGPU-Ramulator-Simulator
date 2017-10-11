@@ -523,8 +523,15 @@ void memory_sub_partition::cache_cycle( unsigned cycle )
                     // L2 cache accepted request
                     m_icnt_L2_queue->pop();
                 } else {
-                    assert(!write_sent);
-                    assert(!read_sent);
+                    if (!m_config->l2_bypass_on_fail) {
+                        assert(!write_sent);
+                        assert(!read_sent);
+                    } else {
+                        mf->set_status(IN_PARTITION_L2_TO_DRAM_QUEUE, gpu_sim_cycle + gpu_tot_sim_cycle);
+                        m_L2_dram_queue->push(mf);
+                        m_icnt_L2_queue->pop();
+                    }
+
                     // L2 cache lock-up: will try again next cycle
                 }
             }

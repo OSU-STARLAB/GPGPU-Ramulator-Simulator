@@ -153,6 +153,12 @@ void memory_config::reg_options(class OptionParser * opp)
                          "unified banked L2 data cache config "
                          " {<nsets>:<bsize>:<assoc>,<rep>:<wr>:<alloc>:<wr_alloc>,<mshr>:<N>:<merge>,<mq>}",
                          "64:128:8,L:B:m:N,A:16:4,4");
+
+
+  option_parser_register(opp, "-L2_bypass_on_fail", OPT_BOOL, &l2_bypass_on_fail,
+                         "Bypass the L2 cache when RF occurs",
+                         "0");
+
   option_parser_register(opp, "-gpgpu_cache:dl2_texture_only", OPT_BOOL, &m_L2_texure_only,
                          "L2 cache used for texture only",
                          "1");
