@@ -527,6 +527,7 @@ void memory_sub_partition::cache_cycle( unsigned cycle )
                         assert(!write_sent);
                         assert(!read_sent);
                     } else {
+                        fprintf(stderr, "it works!\n" );
                         mf->set_status(IN_PARTITION_L2_TO_DRAM_QUEUE, gpu_sim_cycle + gpu_tot_sim_cycle);
                         m_L2_dram_queue->push(mf);
                         m_icnt_L2_queue->pop();
