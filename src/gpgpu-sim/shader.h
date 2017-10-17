@@ -46,7 +46,8 @@
 
 #include "delayqueue.h"
 #include "stack.h"
-#include "dram.h"
+//#include "dram.h"
+#include  "mem_latency_stat.h"
 #include "../abstract_hardware_model.h"
 #include "scoreboard.h"
 #include "mem_fetch.h"

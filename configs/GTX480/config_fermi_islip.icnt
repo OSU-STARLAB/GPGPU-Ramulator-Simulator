@@ -7,7 +7,7 @@ network_count = 2;
 
 // Topology
 topology = fly;
-k = 27;
+k = 50;
 n = 1;
 
 // Routing

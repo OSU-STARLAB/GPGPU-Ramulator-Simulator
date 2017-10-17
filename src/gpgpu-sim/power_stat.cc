@@ -34,7 +34,7 @@
 #include "stat-tool.h"
 #include "../cuda-sim/ptx-stats.h"
 #include "visualizer.h"
-#include "dram.h"
+//#include "dram.h"
 
 #include <string.h>
 #include <stdlib.h>

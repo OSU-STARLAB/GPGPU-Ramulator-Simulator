@@ -31,6 +31,7 @@
 
 # Specify INTERSIM folder, the folder will be located at $GPGPUSIM_ROOT/src/$INTERSIM
 INTERSIM ?= intersim2
+RAMULATORSIM ?= ramulator_sim
 
 include version_detection.mk
 
@@ -57,7 +58,7 @@ endif
 
 $(shell mkdir -p $(SIM_OBJ_FILES_DIR)/libcuda && echo "const char *g_gpgpusim_build_string=\"$(GPGPUSIM_BUILD)\";" > $(SIM_OBJ_FILES_DIR)/detailed_version)
 
-LIBS = cuda-sim gpgpu-sim_uarch $(INTERSIM) gpgpusimlib 
+LIBS = cuda-sim gpgpu-sim_uarch $(INTERSIM)  $(RAMULATORSIM)    gpgpusimlib 
 
 
 TARGETS =
@@ -149,6 +150,7 @@ $(SIM_LIB_DIR)/libcudart.so: makedirs $(LIBS) cudalib
 			$(SIM_OBJ_FILES_DIR)/cuda-sim/decuda_pred_table/*.o \
 			$(SIM_OBJ_FILES_DIR)/gpgpu-sim/*.o \
 			$(SIM_OBJ_FILES_DIR)/$(INTERSIM)/*.o \
+			$(SIM_OBJ_FILES_DIR)/$(RAMULATORSIM)/*.o\
 			$(SIM_OBJ_FILES_DIR)/*.o -lm -lz -lGL -pthread \
 			$(MCPAT) \
 			-o $(SIM_LIB_DIR)/libcudart.so
@@ -169,6 +171,7 @@ $(SIM_LIB_DIR)/libcudart.dylib: makedirs $(LIBS) cudalib
 			$(SIM_OBJ_FILES_DIR)/cuda-sim/decuda_pred_table/*.o \
 			$(SIM_OBJ_FILES_DIR)/gpgpu-sim/*.o \
 			$(SIM_OBJ_FILES_DIR)/$(INTERSIM)/*.o  \
+			$(SIM_OBJ_FILES_DIR)/$(RAMULATORSIM)/*.o\ 
 			$(SIM_OBJ_FILES_DIR)/*.o -lm -lz -pthread \
 			$(MCPAT) \
 			-o $(SIM_LIB_DIR)/libcudart.dylib
@@ -180,6 +183,7 @@ $(SIM_LIB_DIR)/libOpenCL.so: makedirs $(LIBS) opencllib
 			$(SIM_OBJ_FILES_DIR)/cuda-sim/decuda_pred_table/*.o \
 			$(SIM_OBJ_FILES_DIR)/gpgpu-sim/*.o \
 			$(SIM_OBJ_FILES_DIR)/$(INTERSIM)/*.o \
+			$(SIM_OBJ_FILES_DIR)/$(RAMULATORSIM)/*.o\
 			$(SIM_OBJ_FILES_DIR)/*.o -lm -lz -lGL -pthread \
 			$(MCPAT) \
 			-o $(SIM_LIB_DIR)/libOpenCL.so 
@@ -207,6 +211,11 @@ gpgpu-sim_uarch: makedirs cuda-sim
 $(INTERSIM): makedirs cuda-sim gpgpu-sim_uarch
 	$(MAKE) "CREATE_LIBRARY=1" "DEBUG=$(DEBUG)" -C ./src/$(INTERSIM)
 
+
+
+$(RAMULATORSIM): makedirs cuda-sim gpgpu-sim_uarch
+	$(MAKE) "CREATE_LIBRARY=1" "DEBUG=$(DEBUG)" -C ./src/$(RAMULATORSIM) 
+
 gpgpusimlib: makedirs cuda-sim gpgpu-sim_uarch $(INTERSIM)
 	$(MAKE) -C ./src/ depend
 	$(MAKE) -C ./src/
@@ -229,6 +238,7 @@ makedirs:
 	if [ ! -d $(SIM_OBJ_FILES_DIR)/libopencl ]; then mkdir -p $(SIM_OBJ_FILES_DIR)/libopencl; fi;
 	if [ ! -d $(SIM_OBJ_FILES_DIR)/libopencl/bin ]; then mkdir -p $(SIM_OBJ_FILES_DIR)/libopencl/bin; fi;
 	if [ ! -d $(SIM_OBJ_FILES_DIR)/$(INTERSIM) ]; then mkdir -p $(SIM_OBJ_FILES_DIR)/$(INTERSIM); fi;
+	if [ ! -d $(SIM_OBJ_FILES_DIR)/$(RAMULATORSIM) ]; then mkdir -p $(SIM_OBJ_FILES_DIR)/$(RAMULATORSIM); fi;
 	if [ ! -d $(SIM_OBJ_FILES_DIR)/cuobjdump_to_ptxplus ]; then mkdir -p $(SIM_OBJ_FILES_DIR)/cuobjdump_to_ptxplus; fi;
 	if [ ! -d $(SIM_OBJ_FILES_DIR)/gpuwattch ]; then mkdir -p $(SIM_OBJ_FILES_DIR)/gpuwattch; fi;
 	if [ ! -d $(SIM_OBJ_FILES_DIR)/gpuwattch/cacti ]; then mkdir -p $(SIM_OBJ_FILES_DIR)/gpuwattch/cacti; fi;

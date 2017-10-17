@@ -34,7 +34,7 @@
 
 #include "../option_parser.h"
 #include "mem_fetch.h"
-#include "dram.h"
+//#include "dram.h"
 #include "gpu-cache.h"
 #include "histogram.h"
 #include "l2cache.h"
@@ -44,7 +44,7 @@
 #include "shader.h"
 #include "mem_latency_stat.h"
 #include "l2cache_trace.h"
-
+#include "../ramulator_sim/Config.h"
 
 mem_fetch * partition_mf_allocator::alloc(new_addr_type addr, mem_access_type type, unsigned size, bool wr ) const 
 {
@@ -65,8 +65,15 @@ memory_partition_unit::memory_partition_unit( unsigned partition_id,
                                               class memory_stats_t *stats )
 : m_id(partition_id), m_config(config), m_stats(stats), m_arbitration_metadata(config) 
 {
-    m_dram = new dram_t(m_id,m_config,m_stats,this);
+   // m_dram = new dram_t(m_id,m_config,m_stats,this);
 
+
+
+
+
+    Config m_r_config("HBM-config.cfg");                                                                                // m_dram = new dram_t(m_id,m_config,m_stats,this);
+    m_r_config.set_core_num(core_numbers);                                                       
+    m_dram_r = new GpuWrapper(m_r_config, m_config->m_L2_config.get_line_sz() , this, m_id);                          
     m_sub_partition = new memory_sub_partition*[m_config->m_n_sub_partition_per_memory_channel]; 
     for (unsigned p = 0; p < m_config->m_n_sub_partition_per_memory_channel; p++) {
         unsigned sub_partition_id = m_id * m_config->m_n_sub_partition_per_memory_channel + p; 
@@ -76,7 +83,8 @@ memory_partition_unit::memory_partition_unit( unsigned partition_id,
 
 memory_partition_unit::~memory_partition_unit() 
 {
-    delete m_dram; 
+   // delete m_dram;
+    delete m_dram_r;  
     for (unsigned p = 0; p < m_config->m_n_sub_partition_per_memory_channel; p++) {
         delete m_sub_partition[p]; 
     } 
@@ -168,10 +176,10 @@ void memory_partition_unit::cache_cycle(unsigned cycle)
 
 void memory_partition_unit::visualizer_print( gzFile visualizer_file ) const 
 {
-    m_dram->visualizer_print(visualizer_file);
-    for (unsigned p = 0; p < m_config->m_n_sub_partition_per_memory_channel; p++) {
-        m_sub_partition[p]->visualizer_print(visualizer_file); 
-    }
+//    m_dram->visualizer_print(visualizer_file);
+//    for (unsigned p = 0; p < m_config->m_n_sub_partition_per_memory_channel; p++) {
+//        m_sub_partition[p]->visualizer_print(visualizer_file); 
+//    }
 }
 
 // determine whether a given subpartition can issue to DRAM 
@@ -196,7 +204,7 @@ void memory_partition_unit::dram_cycle()
 { 
     // pop completed memory request from dram and push it to dram-to-L2 queue 
     // of the original sub partition 
-    mem_fetch* mf_return = m_dram->return_queue_top();
+ /*   mem_fetch* mf_return = m_dram->return_queue_top();
     if (mf_return) {
         unsigned dest_global_spid = mf_return->get_sub_partition_id(); 
         int dest_spid = global_sub_partition_id_to_local_id(dest_global_spid); 
@@ -246,7 +254,90 @@ void memory_partition_unit::dram_cycle()
         mem_fetch* mf = m_dram_latency_queue.front().req;
         m_dram_latency_queue.pop_front();
         m_dram->push(mf);
+    }*/
+
+mem_fetch* mf_return = m_dram_r->r_return_queue_top();
+    if (mf_return) {
+        unsigned dest_global_spid = mf_return->get_sub_partition_id();
+        int dest_spid = global_sub_partition_id_to_local_id(dest_global_spid);
+        assert(m_sub_partition[dest_spid]->get_id() == dest_global_spid);
+        if (!m_sub_partition[dest_spid]->dram_L2_queue_full()) {
+            if ( mf_return->get_access_type() == L1_WRBK_ACC ) {
+                m_sub_partition[dest_spid]->set_done(mf_return);
+                delete mf_return;
+            } else {
+                m_sub_partition[dest_spid]->dram_L2_queue_push(mf_return);
+                mf_return->set_status(IN_PARTITION_DRAM_TO_L2_QUEUE, gpu_sim_cycle + gpu_tot_sim_cycle);
+                m_arbitration_metadata.return_credit(dest_spid);
+                MEMPART_DPRINTF("mem_fetch request %p return from dram to sub partition %d\n", mf_return, dest_spid);
+            }
+            m_dram_r->r_return_queue_pop();
+        }
+    } else {
+        m_dram_r->r_return_queue_pop();
     }
+    m_dram_r->cycle(); // In this part, when read/write complete, the return q should be automatically written due to the call back function.
+    int last_issued_partition = m_arbitration_metadata.last_borrower();
+    for (unsigned p = 0; p < m_config->m_n_sub_partition_per_memory_channel; p++) {
+        int spid = (p + last_issued_partition + 1) % m_config->m_n_sub_partition_per_memory_channel;
+        if (!m_sub_partition[spid]->L2_dram_queue_empty() && can_issue_to_dram(spid)) {
+            mem_fetch *mf = m_sub_partition[spid]->L2_dram_queue_top();
+
+            if (mf->is_write())
+            {   // 1 is for write, while 0 for read
+                if ( !m_dram_r->full(1, (long)mf->get_addr()) )
+                {
+                    m_sub_partition[spid]->L2_dram_queue_pop();
+                    MEMPART_DPRINTF("Issue mem_fetch request %p from sub partition %d to dram\n", mf, spid);
+                    dram_delay_t d;
+                    d.req = mf;
+                    d.ready_cycle = gpu_sim_cycle + gpu_tot_sim_cycle + m_config->dram_latency;
+                    m_dram_latency_queue.push_back(d);
+                    mf->set_status(IN_PARTITION_DRAM_LATENCY_QUEUE, gpu_sim_cycle + gpu_tot_sim_cycle);
+                    m_arbitration_metadata.borrow_credit(spid);
+                    break;  // the DRAM should only accept one request per cycle
+
+                }
+            } else
+{
+
+                if ( !m_dram_r->full(0, (long)mf->get_addr()) )
+                {
+                    m_sub_partition[spid]->L2_dram_queue_pop();
+                    MEMPART_DPRINTF("Issue mem_fetch request %p from sub partition %d to dram\n", mf, spid);
+                    dram_delay_t d;
+                    d.req = mf;
+                    d.ready_cycle = gpu_sim_cycle + gpu_tot_sim_cycle + m_config->dram_latency;
+                    m_dram_latency_queue.push_back(d);
+                    mf->set_status(IN_PARTITION_DRAM_LATENCY_QUEUE, gpu_sim_cycle + gpu_tot_sim_cycle);
+                    m_arbitration_metadata.borrow_credit(spid);
+                    break;  // the DRAM should only accept one request per cycle
+                }
+            }
+        }
+    }
+
+    if ( !m_dram_latency_queue.empty() && ( (gpu_sim_cycle + gpu_tot_sim_cycle) >= m_dram_latency_queue.front().ready_cycle ) ) {
+
+
+        mem_fetch* mf = m_dram_latency_queue.front().req;
+        if (mf->is_write())
+        {
+            if ( !m_dram_r->full(1, (long)mf->get_addr()) )
+            {
+                m_dram_latency_queue.pop_front();
+                m_dram_r->push(mf);
+            }
+        } else
+        {
+            if ( !m_dram_r->full(0, (long)mf->get_addr()) )
+            {
+                m_dram_latency_queue.pop_front();
+                m_dram_r->push(mf);
+            }
+        }
+    }
+
 }
 
 void memory_partition_unit::set_done( mem_fetch *mf )
@@ -261,7 +352,14 @@ void memory_partition_unit::set_done( mem_fetch *mf )
     m_sub_partition[spid]->set_done(mf); 
 }
 
-void memory_partition_unit::set_dram_power_stats(unsigned &n_cmd,
+
+
+
+void memory_partition_unit::print_stat( FILE * fp ) const
+{
+m_dram_r->finish(); 
+}
+/*void memory_partition_unit::set_dram_power_stats(unsigned &n_cmd,
                                                  unsigned &n_activity,
                                                  unsigned &n_nop,
                                                  unsigned &n_act,
@@ -271,7 +369,7 @@ void memory_partition_unit::set_dram_power_stats(unsigned &n_cmd,
                                                  unsigned &n_req) const
 {
     m_dram->set_dram_power_stats(n_cmd, n_activity, n_nop, n_act, n_pre, n_rd, n_wr, n_req);
-}
+}*/
 
 void memory_partition_unit::print( FILE *fp ) const
 {
@@ -289,7 +387,7 @@ void memory_partition_unit::print( FILE *fp ) const
         else 
             fprintf(fp, " <NULL mem_fetch?>\n"); 
     }
-    m_dram->print(fp); 
+    m_dram_r->finish(); 
 }
 
 memory_sub_partition::memory_sub_partition( unsigned sub_partition_id, 

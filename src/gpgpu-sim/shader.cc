@@ -30,7 +30,7 @@
 #include "shader.h"
 #include "gpu-sim.h"
 #include "addrdec.h"
-#include "dram.h"
+//#include "dram.h"
 #include "stat-tool.h"
 #include "gpu-misc.h"
 #include "../cuda-sim/ptx_sim.h"

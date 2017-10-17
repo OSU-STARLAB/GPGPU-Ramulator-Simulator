@@ -36,7 +36,7 @@
 
 
 #include "shader.h"
-#include "dram.h"
+//#include "dram.h"
 #include "mem_fetch.h"
 
 #include <time.h>
@@ -45,7 +45,7 @@
 #include "delayqueue.h"
 #include "shader.h"
 #include "icnt_wrapper.h"
-#include "dram.h"
+//#include "dram.h"
 #include "addrdec.h"
 #include "stat-tool.h"
 #include "l2cache.h"
@@ -82,7 +82,7 @@ bool g_interactive_debugger_enabled=false;
 
 unsigned long long  gpu_sim_cycle = 0;
 unsigned long long  gpu_tot_sim_cycle = 0;
-
+int core_numbers = 0;
 
 // performance counter for stalls due to congestion.
 unsigned int gpu_stall_dramfull = 0; 
@@ -623,6 +623,7 @@ gpgpu_sim::gpgpu_sim( const gpgpu_sim_config &config )
 
 
     m_cluster = new simt_core_cluster*[m_shader_config->n_simt_clusters];
+    core_numbers = m_shader_config->n_simt_clusters;
     for (unsigned i=0;i<m_shader_config->n_simt_clusters;i++) 
         m_cluster[i] = new simt_core_cluster(this,i,m_shader_config,m_memory_config,m_shader_stats,m_memory_stats);
 
@@ -1308,14 +1309,14 @@ void shader_core_ctx::issue_block2core( kernel_info_t &kernel )
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void dram_t::dram_log( int task ) 
+/*void dram_t::dram_log( int task ) 
 {
    if (task == SAMPLELOG) {
       StatAddSample(mrqq_Dist, que_length());   
    } else if (task == DUMPLOG) {
       printf ("Queue Length DRAM[%d] ",id);StatDisp(mrqq_Dist);
    }
-}
+}*/
 
 //Find next clock domain and increment its time
 int gpgpu_sim::next_clock_domain(void) 
@@ -1391,9 +1392,9 @@ void gpgpu_sim::cycle()
       for (unsigned i=0;i<m_memory_config->m_n_mem;i++){
          m_memory_partition_unit[i]->dram_cycle(); // Issue the dram command (scheduler + delay model)
          // Update performance counters for DRAM
-         m_memory_partition_unit[i]->set_dram_power_stats(m_power_stats->pwr_mem_stat->n_cmd[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_activity[CURRENT_STAT_IDX][i],
-                        m_power_stats->pwr_mem_stat->n_nop[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_act[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_pre[CURRENT_STAT_IDX][i],
-                        m_power_stats->pwr_mem_stat->n_rd[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_wr[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_req[CURRENT_STAT_IDX][i]);
+       //  m_memory_partition_unit[i]->set_dram_power_stats(m_power_stats->pwr_mem_stat->n_cmd[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_activity[CURRENT_STAT_IDX][i],
+        //                m_power_stats->pwr_mem_stat->n_nop[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_act[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_pre[CURRENT_STAT_IDX][i],
+      //                  m_power_stats->pwr_mem_stat->n_rd[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_wr[CURRENT_STAT_IDX][i], m_power_stats->pwr_mem_stat->n_req[CURRENT_STAT_IDX][i]);
       }
    }
 
@@ -1583,9 +1584,9 @@ void gpgpu_sim::dump_pipeline( int mask, int s, int m ) const
             i=m;
          }
          printf("DRAM / memory controller %u:\n", i);
-         if(mask&0x100000) m_memory_partition_unit[i]->print_stat(stdout);
-         if(mask&0x1000000)   m_memory_partition_unit[i]->visualize();
-         if(mask&0x10000000)   m_memory_partition_unit[i]->print(stdout);
+        // if(mask&0x100000) m_memory_partition_unit[i]->print_stat(stdout);
+        // if(mask&0x1000000)   m_memory_partition_unit[i]->visualize();
+        // if(mask&0x10000000)   m_memory_partition_unit[i]->print(stdout);
          if(m != -1) {
             break;
          }

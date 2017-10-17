@@ -28,11 +28,13 @@
 #ifndef MC_PARTITION_INCLUDED
 #define MC_PARTITION_INCLUDED
 
-#include "dram.h"
+//#include "dram.h"
 #include "../abstract_hardware_model.h"
-
+#include "../ramulator_sim/gpu_wrapper.h"
+#include <zlib.h>
 #include <list>
 #include <queue>
+#include <set>
 
 class mem_fetch;
 
@@ -69,8 +71,9 @@ public:
    void set_done( mem_fetch *mf );
 
    void visualizer_print( gzFile visualizer_file ) const;
-   void print_stat( FILE *fp ) { m_dram->print_stat(fp); }
-   void visualize() const { m_dram->visualize(); }
+   void print_stat( FILE *fp ) const;
+//{ m_dram->print_stat(fp); }
+  // void visualize() const { m_dram->visualize(); }
    void print( FILE *fp ) const;
 
    class memory_sub_partition * get_sub_partition(int sub_partition_id) 
@@ -98,7 +101,8 @@ private:
    const struct memory_config *m_config;
    class memory_stats_t *m_stats;
    class memory_sub_partition **m_sub_partition; 
-   class dram_t *m_dram;
+  // class dram_t *m_dram
+   class GpuWrapper *m_dram_r;
 
    class arbitration_metadata
    {
